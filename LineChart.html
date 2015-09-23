@@ -1,0 +1,71 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://nvd3.org/assets/css/nv.d3.css">
+    <script type="text/javascript" src="http://nvd3.org/assets/lib/d3.v2.js"></script>
+    <script type="text/javascript" src="http://nvd3.org/assets/lib/fisheye.js"></script>
+    <script type="text/javascript" src="http://nvd3.org/assets/js/nv.d3.js"></script>
+</head>
+
+<body>
+    <style>
+    #chart svg {
+        height: 400px;
+    }
+    </style>
+    <div id="chart">
+        <svg>
+        </svg>
+    </div>
+    <script>
+    var data = function() {
+        var sin = [],
+            cos = [];
+
+        for (var i = 0; i < 100; i++) {
+            sin.push({
+                x: i,
+                y: i
+            });
+            cos.push({
+                x: i,
+                y: .5 * i
+            });
+        }
+
+        return [{
+            values: sin,
+            key: 'Sine Wave',
+            color: '#ff7f0e'
+        }, {
+            values: cos,
+            key: 'Cosine Wave',
+            color: '#2ca02c'
+        }];
+    };
+    nv.addGraph(function() {
+        var chart = nv.models.lineChart()
+            .useInteractiveGuideline(true);
+
+        chart.xAxis
+            .axisLabel('Time (ms)')
+            .tickFormat(d3.format(',r'));
+
+        chart.yAxis
+            .axisLabel('Voltage (v)')
+            .tickFormat(d3.format('.02f'));
+
+        d3.select('#chart svg')
+            .datum(data())
+            .transition().duration(500)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        return chart;
+    });
+    </script>
+</body>
+
+</html>
